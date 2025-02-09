@@ -18,3 +18,4 @@ endif()
 install(TARGETS ${APP_NAME} RUNTIME DESTINATION bin)
 
 set_target_properties(${APP_NAME} PROPERTIES FOLDER "tests")
+set_target_properties(${APP_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "install/bin")

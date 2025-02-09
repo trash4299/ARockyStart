@@ -115,7 +115,7 @@ goto end
   )
   echo Usage: vcpkg-bootstrap.bat -S source_folder -B build_folder -I install_folder -G compiler -A architecture
   echo Example: 
-  echo    vcpkg-bootstrap.bat -S . -B ..\build -I ..\install -G "Visual Studio 17 2022" -A x64 
+  echo    vcpkg-bootstrap.bat -S . -B ..\build -I ..\build\install -G "Visual Studio 17 2022" -A x64 
 
 :end
   endlocal

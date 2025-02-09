@@ -60,9 +60,9 @@ Thanks to these excellent open source projects!
 ## Run the Demo
 Rocky is pretty good at finding its data files, but you might need to set a couple environment variables to help:
 ```bat
-set ROCKY_FILE_PATH=%rocky_install_dir%/share/rocky
-set ROCKY_DEFAULT_FONT=C:/windows/fonts/arialbd.ttf
-set PROJ_DATA=%proj_install_dir%/share/proj
+set ROCKY_FILE_PATH=<YOURWORKSPACE>\build\share
+set ROCKY_DEFAULT_FONT=C:\windows\fonts\arialbd.ttf
+set PROJ_DATA=<YOURWORKSPACE>\build\vcpkg_installed\x64-windows\share\proj
 ```
 
 If you built with `vcpkg` you will also need to add the dependencies folder to your path; this will normally be found in `vcpkg_installed/x64-windows` (or whatever platform you are using).

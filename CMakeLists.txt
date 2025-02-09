@@ -1,10 +1,14 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.12)
 
 # if using vcpkg, configure overlay ports (that are not available in vcpkg prime)
-if (${CMAKE_TOOLCHAIN_FILE} MATCHES ".*vcpkg.cmake.*")
+if (DEFINED CMAKE_TOOLCHAIN_FILE AND CMAKE_TOOLCHAIN_FILE MATCHES "vcpkg.cmake")
     message(STATUS "Building with vcpkg toolchain.")
     set(USING_VCPKG ON)
     set(VCPKG_OVERLAY_PORTS ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/ports)
+endif()
+
+if(NOT CMAKE_INSTALL_PREFIX)
+    set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/build/install" CACHE PATH "Install directory" FORCE)
 endif()
 
 # Main PROJECT definition
@@ -39,11 +43,11 @@ mark_as_advanced(ROCKY_APPEND_SO_VERSION)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # temporary folder to hold build-time header compilation (.in files built with compile_files)
-set(ROCKY_BUILDTIME_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/build_include")
+set(ROCKY_BUILDTIME_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/include")
 include_directories(${ROCKY_BUILDTIME_INCLUDE_DIR})
 
 # temporary folder to hold shared resources (like shaders) for use whrn running from the IDE
-set(ROCKY_BUILDTIME_SHARE_DIR "${CMAKE_CURRENT_BINARY_DIR}/build_share")
+set(ROCKY_BUILDTIME_SHARE_DIR "${CMAKE_CURRENT_BINARY_DIR}/share")
 
 # set up standard install folder names, CMAKE_INSTALL_*
 # https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html
@@ -53,16 +57,20 @@ include(GNUInstallDirs)
 include("cmake/install-export-files.cmake")
 
 # optional modules
+# Renderer options
 option(ROCKY_RENDERER_VSG "Build the VSG/Vulkan Rendering" ON)
+# HTTP/HTTPS options
 option(ROCKY_SUPPORTS_HTTPLIB "Support HTTP with the lightweight cpp-httplib library" ON)
 option(ROCKY_SUPPORTS_CURL "Support HTTP with the CURL library" OFF)
 option(ROCKY_SUPPORTS_HTTPS "Support HTTPS (requires openssl)" ON)
+# Map format support
 option(ROCKY_SUPPORTS_TMS "Support OSGeo TileMapService and generic 'XYZ' maps" ON)
 option(ROCKY_SUPPORTS_GDAL "Support GeoTIFF, WMS, WMTS, and other GDAL formats (requires gdal)" ON)
 option(ROCKY_SUPPORTS_MBTILES "Support MBTiles databases with extended spatial profile support (requires sqlite3, zlib)" ON)
 option(ROCKY_SUPPORTS_AZURE "Support Azure Maps (subscription required)" ON)
 option(ROCKY_SUPPORTS_BING "Support Bing Maps (subscription required)" ON)
 option(ROCKY_SUPPORTS_IMGUI "Build ImGui demos" ON)
+# Other
 option(ROCKY_SUPPORTS_QT "Build Qt demos" OFF)
 
 mark_as_advanced(ROCKY_RENDERER_VSG)
